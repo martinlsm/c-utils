@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
+project(c-utils)
+
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -37,3 +39,9 @@ target_compile_options(test-linkedlist PRIVATE -g -Wall -Werror)
 target_include_directories(test-linkedlist PRIVATE ${PROJECT_SOURCE_DIR}/data-structures/)
 target_link_libraries(test-linkedlist gtest_main)
 add_test(NAME unittest-linkedlist COMMAND test-linkedlist)
+
+add_executable(test-binaryheap test/test-binaryheap.cpp data-structures/binaryheap.c)
+target_compile_options(test-binaryheap PRIVATE -g -Wall -Werror)
+target_include_directories(test-binaryheap PRIVATE ${PROJECT_SOURCE_DIR}/data-structures/)
+target_link_libraries(test-binaryheap gtest_main)
+add_test(NAME unittest-binaryheap COMMAND test-binaryheap)

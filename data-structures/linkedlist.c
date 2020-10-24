@@ -115,6 +115,8 @@ int singly_linked_list_push_front(SinglyLinkedList *list, void *data) {
   }
 
   new_first->next = list->first;
+  new_first->data = data;
+
   list->first = new_first;
   list->len += 1;
 

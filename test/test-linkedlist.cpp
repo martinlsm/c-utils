@@ -5,11 +5,7 @@ extern "C" {
 #include "gtest/gtest.h"
 
 static int I1 = 1;
-// static int I2 = 2;
-// static int I3 = 3;
 static void *DATA1 = &I1;
-// static void *DATA2 = &I2;
-// static void *DATA3 = &I3;
 
 TEST(SinglyLinkedList, Create) {
   SinglyLinkedList *list = nullptr;

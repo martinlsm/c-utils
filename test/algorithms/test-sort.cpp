@@ -3,20 +3,32 @@ extern "C" {
 }
 
 #include <errno.h>
-#include <stdio.h>
 
 #include "gtest/gtest.h"
 
-void print_array(int64_t *arr, size_t len) {
-  printf("[");
-  for (size_t i = 0; i < len; ++i) {
-    if (i < len - 1) {
-      printf("%ld, ", arr[i]);
-    } else {
-      printf("%ld", arr[i]);
+static bool adjacent_numbers_sorted(int64_t* arr, int64_t low, int64_t high) {
+  size_t i = 0;
+  int64_t e = low;
+  while (e <= high) {
+    if (arr[i] != e) {
+      return false;
+    }
+
+    i += 1;
+    e += 1;
+  }
+
+  return true;
+}
+
+static bool is_sorted(int64_t* arr, size_t len) {
+  for (size_t i = 1; i < len; ++i) {
+    if (arr[i] < arr[i - 1]) {
+      return false;
     }
   }
-  printf("]\n");
+
+  return true;
 }
 
 TEST(Sort, NullPointerAsArray) {
@@ -33,6 +45,58 @@ TEST(Sort, SingleElement) {
   int ret = quicksort_in_place_int64(arr, arr_len);
   ASSERT_EQ(ret, 0);
   ASSERT_EQ(arr[0], 1);
+}
+
+TEST(Sort, TwoElements) {
+  int64_t arr[] = {2, 1};
+  size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(adjacent_numbers_sorted(arr, 1, 2));
+}
+
+TEST(Sort, ThreeElements) {
+  int64_t arr[] = {3, 1, 2};
+  size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(adjacent_numbers_sorted(arr, 1, 3));
+}
+
+TEST(Sort, FiveElements) {
+  int64_t arr[] = {5, 2, 1, 3, 4};
+  size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(adjacent_numbers_sorted(arr, 1, 5));
+}
+
+TEST(Sort, TenElements) {
+  int64_t arr[] = {5, 10, 4, 1, 2, 7, 6, 8, 3, 9};
+  size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(adjacent_numbers_sorted(arr, 1, 10));
+}
+
+TEST(Sort, AlreadySorted) {
+  int64_t arr[] = {1, 2, 3, 4, 5, 6, 7, 8};
+  size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(adjacent_numbers_sorted(arr, 1, 8));
+}
+
+TEST(Sort, RandomElements) {
+  size_t arr_len = 100000;
+  srand(1);
+  int64_t arr[arr_len];
+  for (size_t i = 0; i < arr_len; ++i) {
+    arr[i] = (int64_t) rand();
+  }
+  int ret = quicksort_in_place_int64(arr, arr_len);
+  ASSERT_EQ(ret, 0);
+  ASSERT_TRUE(is_sorted(arr, arr_len));
 }
 
 TEST(Sort, DontWriteToAdjacentMemory) {

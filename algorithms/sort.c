@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <string.h>
 
 static void quicksort_in_place_int64_helper(int64_t *arr_read,
                                             int64_t *arr_write, size_t len);
@@ -45,7 +46,7 @@ static void quicksort_in_place_int64_helper(int64_t *arr_read,
   }
 
   assert(lt_count == len - 1 - gt_count);
-  arr_write[lt_count] = pivot;
+  arr_write[lt_count] = arr_read[lt_count] = pivot;
 
   quicksort_in_place_int64_helper(arr_write, arr_read, lt_count);
   quicksort_in_place_int64_helper(arr_write + lt_count + 1,

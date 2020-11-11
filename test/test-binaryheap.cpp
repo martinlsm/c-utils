@@ -36,4 +36,9 @@ TEST_F(BinaryHeapTest, SingleInsert) {
 }
 
 TEST_F(BinaryHeapTest, InsertAndPeek) {
+  int ret = binary_heap_insert(heap, &a);
+  ASSERT_FALSE(ret);
+  int *x;
+  ret = binary_heap_peek(heap, (void**)&x);
+  ASSERT_EQ(*x, 1);
 }

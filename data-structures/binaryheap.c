@@ -60,6 +60,12 @@ int binary_heap_insert(BinaryHeap *heap, void *data) {
   //
   // }
 
+  if (heap->size == 1) {
+    heap->data[0] = data;
+
+    return 0;
+  }
+
   // Sift up.
   size_t i = heap->size;
   while (i > 0 && heap->comp(heap->data[get_parent(i)], data) > 0) {
@@ -77,12 +83,13 @@ int binary_heap_peek(BinaryHeap *heap, void **data) {
     return EINVAL;
   }
 
-  *data = heap->data;
+  *data = *heap->data;
 
   return 0;
 }
 
 int binary_heap_pop(BinaryHeap *heap) {
+  (void) heap;
   return 0;
 }
 
